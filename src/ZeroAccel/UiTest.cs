@@ -130,6 +130,9 @@ internal static class UiTest
             window.UpdateLayout();
             if (window.DriverActions.Visibility != Visibility.Visible)
                 throw new Exception("Connected driver actions missing");
+            AssertFooterLayout(window);
+            if (window.MeasureButton.IsEnabled && !window.ShowLastMouseMoveCheck.IsEnabled)
+                throw new Exception("Live marker was disabled by an active Raw Accel profile");
             window.DriverApplyButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
             foreach (var button in new[] { window.DriverApplyButton, window.DriverReadButton })
             {
@@ -141,6 +144,39 @@ internal static class UiTest
             if (!window.SettingsScroll.IsEnabled || !window.ImportButton.IsEnabled)
                 throw new Exception("Idle Raw Accel panel should allow editing");
         }
+    }
+
+    private static void AssertFooterLayout(MainWindow window)
+    {
+        var driver = new[] { window.DriverReadButton, window.DriverApplyButton };
+        var files = new[] { window.ImportButton, window.ExportButton, window.SaveButton };
+        var all = driver.Concat(files).ToArray();
+        Rect? previous = null;
+        foreach (var button in all)
+        {
+            var bounds = button.TransformToAncestor(window).TransformBounds(new Rect(button.RenderSize));
+            if (Math.Abs(bounds.Height-38) > .5 || bounds.Width < 95.5)
+                throw new Exception("Inconsistent footer action size: " + button.Name);
+            if (bounds.Left < 0 || bounds.Right > window.ActualWidth || bounds.Bottom > window.ActualHeight)
+                throw new Exception("Footer action clipped: " + button.Name);
+            if (previous is Rect prior && Math.Abs(bounds.Top-prior.Top) > .5)
+                throw new Exception("Footer actions are not vertically aligned");
+            previous = bounds;
+        }
+        foreach (var group in new[] { driver, files })
+        {
+            for (int i=1;i<group.Length;i++)
+            {
+                var left=group[i-1].TransformToAncestor(window).TransformBounds(new Rect(group[i-1].RenderSize));
+                var right=group[i].TransformToAncestor(window).TransformBounds(new Rect(group[i].RenderSize));
+                if (Math.Abs(right.Left-left.Right-8) > .5)
+                    throw new Exception("Unequal footer action spacing");
+            }
+        }
+        var driverEnd=driver[^1].TransformToAncestor(window).TransformBounds(new Rect(driver[^1].RenderSize));
+        var fileStart=files[0].TransformToAncestor(window).TransformBounds(new Rect(files[0].RenderSize));
+        if (fileStart.Left-driverEnd.Right < 24)
+            throw new Exception("Driver and file actions overlap or lack visual separation");
     }
 
     private static void Capture(MainWindow window, string path)

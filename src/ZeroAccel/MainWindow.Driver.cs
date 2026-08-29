@@ -18,9 +18,6 @@ public partial class MainWindow
         RawAccelProtocol.DeviceId(d.InstanceId).Equals(SelectedRawId,StringComparison.OrdinalIgnoreCase))==1;
     private RawAccelSelection? SelectedRawProfile => driverStatus is not null && SelectedRawId.Length>0
         ? RawAccelProtocol.Inspect(driverStatus,SelectedRawId) : null;
-    // Unknown status is not evidence of unfiltered input. Never plot it as pre-filter speed.
-    private bool SelectedDriverActive => !app.TestMode && (driverStatus is null || SelectedRawProfile?.Enabled==true);
-
     private void InitializeDriver()
     {
         Activated += async (_,_) => await RefreshDriverAsync();
@@ -85,8 +82,8 @@ public partial class MainWindow
         DriverApplyButton.ToolTip=app.T(UniqueRawTarget ? "S_ApplyTooltip" : "M_RawTargetAmbiguous");
         SettingsScroll.IsEnabled=CurveModeCombo.IsEnabled=ResetButton.IsEnabled=ImportButton.IsEnabled=!driverBusy;
         DeviceButton.IsEnabled=RefreshDevicesButton.IsEnabled=!driverBusy;
-        ShowLastMouseMoveCheck.IsEnabled=devices.Count>0 && !SelectedDriverActive;
-        ShowLastMouseMoveCheck.ToolTip=app.T(SelectedDriverActive ? "M_DriverMarkerUnavailable" : "S_LastMoveTooltip");
+        ShowLastMouseMoveCheck.IsEnabled=devices.Count>0;
+        ShowLastMouseMoveCheck.ToolTip=app.T("S_LastMoveTooltip");
         UpdateDriverLabel();
     }
     private void UpdateDriverLabel()

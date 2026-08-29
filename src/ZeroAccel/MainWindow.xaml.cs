@@ -134,7 +134,7 @@ public partial class MainWindow : Window
     private void UpdateMotionTracking()
     {
         if (probe is null) return;
-        if (!Curve.ShowLastMove || SelectedDriverActive || !IsActive || !IsVisible || WindowState == WindowState.Minimized || devices.Count == 0)
+        if (!Curve.ShowLastMove || !IsActive || !IsVisible || WindowState == WindowState.Minimized || devices.Count == 0)
         { probe.StopTracking(); return; }
         if (!probe.StartTracking(devices[deviceIndex].Handle)) StatusDetail.Text = app.T("M_MotionStartError");
     }
