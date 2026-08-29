@@ -1,0 +1,318 @@
+<Application x:Class="ZeroAccel.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:local="clr-namespace:ZeroAccel" ShutdownMode="OnExplicitShutdown">
+  <Application.Resources>
+    <local:ThemeColor x:Key="BackgroundColor" Value="#050505"/>
+    <local:ThemeColor x:Key="SurfaceColor" Value="#111111"/>
+    <local:ThemeColor x:Key="HoverColor" Value="#1D1D1D"/>
+    <local:ThemeColor x:Key="BorderColor" Value="#292929"/>
+    <local:ThemeColor x:Key="TextColor" Value="#EDEDED"/>
+    <local:ThemeColor x:Key="MutedColor" Value="#A0A0A0"/>
+    <local:ThemeColor x:Key="SubtleColor" Value="#787878"/>
+    <!-- Explicit sources do not depend on a Freezable's resource lookup context.
+         Bindings also prevent freezing the shared brushes used by hidden text. -->
+    <SolidColorBrush x:Key="BackgroundBrush" Color="{Binding Value, Source={StaticResource BackgroundColor}, Mode=OneWay}"/>
+    <SolidColorBrush x:Key="SurfaceBrush" Color="{Binding Value, Source={StaticResource SurfaceColor}, Mode=OneWay}"/>
+    <SolidColorBrush x:Key="HoverBrush" Color="{Binding Value, Source={StaticResource HoverColor}, Mode=OneWay}"/>
+    <SolidColorBrush x:Key="BorderBrush" Color="{Binding Value, Source={StaticResource BorderColor}, Mode=OneWay}"/>
+    <SolidColorBrush x:Key="TextBrush" Color="{Binding Value, Source={StaticResource TextColor}, Mode=OneWay}"/>
+    <SolidColorBrush x:Key="MutedBrush" Color="{Binding Value, Source={StaticResource MutedColor}, Mode=OneWay}"/>
+    <SolidColorBrush x:Key="SubtleBrush" Color="{Binding Value, Source={StaticResource SubtleColor}, Mode=OneWay}"/>
+
+    <sys:String x:Key="S_TooltipTheme">Zmień motyw</sys:String>
+    <sys:String x:Key="S_About">O aplikacji</sys:String>
+    <sys:String x:Key="S_AboutTooltip">O aplikacji 0Accel</sys:String>
+    <sys:String x:Key="S_Dismiss">Zamknij</sys:String>
+    <sys:String x:Key="S_AboutDriver">Sterownik · niedostępny</sys:String>
+    <sys:String x:Key="S_AboutDescription">Panel i podgląd krzywej. Ta wersja nie zmienia ruchu myszy.</sys:String>
+    <sys:String x:Key="S_ThemeToLight">Przełącz na jasny motyw</sys:String>
+    <sys:String x:Key="S_ThemeToDark">Przełącz na ciemny motyw</sys:String>
+    <sys:String x:Key="S_TooltipMinimize">Minimalizuj</sys:String>
+    <sys:String x:Key="S_TooltipClose">Schowaj do zasobnika</sys:String>
+    <sys:String x:Key="S_WindowSizeTooltip">Rozmiar okna w fizycznych pikselach</sys:String>
+    <sys:String x:Key="S_DeviceHeader">URZĄDZENIE</sys:String>
+    <sys:String x:Key="S_DeviceLoading">Wykrywanie myszy…</sys:String>
+    <sys:String x:Key="S_DpiManual">DPI · RĘCZNIE</sys:String>
+    <sys:String x:Key="S_DpiTooltip">DPI sensora, nie skalowanie ekranu. Standardowe API Windows nie odczytuje tej wartości. Pozostaw puste, jeśli nie znasz DPI.</sys:String>
+    <sys:String x:Key="S_PollingRate">POLLING RATE</sys:String>
+    <sys:String x:Key="S_Measure">Zmierz</sys:String>
+    <sys:String x:Key="S_Cancel">Anuluj</sys:String>
+    <sys:String x:Key="S_MeasureTooltip">Poruszaj myszą przez 3 sekundy. Wynik jest szacunkiem częstotliwości raportów.</sys:String>
+    <sys:String x:Key="S_DeviceTooltip">Wybierz mysz do pomiaru</sys:String>
+    <sys:String x:Key="S_RefreshDevicesTooltip">Odśwież urządzenia</sys:String>
+    <sys:String x:Key="S_SectionAcceleration">Akceleracja</sys:String>
+    <sys:String x:Key="S_SectionAdvanced">Opcje zaawansowane</sys:String>
+    <sys:String x:Key="S_Sensitivity">Mnożnik czułości</sys:String>
+    <sys:String x:Key="S_SensitivityInput">Czułość — wartość</sys:String>
+    <sys:String x:Key="S_AccelStrength">Siła akceleracji</sys:String>
+    <sys:String x:Key="S_AccelStrengthInput">Siła akceleracji — wartość</sys:String>
+    <sys:String x:Key="S_LimitMultiplier">Limit mnożnika</sys:String>
+    <sys:String x:Key="S_LimitInput">Limit mnożnika — wartość</sys:String>
+    <sys:String x:Key="S_SensitivityMultiplier">Współczynnik czułości</sys:String>
+    <sys:String x:Key="S_SensitivityMultiplierInput">Współczynnik czułości — wartość</sys:String>
+    <sys:String x:Key="S_YxRatio">Proporcja Y / X</sys:String>
+    <sys:String x:Key="S_YxRatioInput">Proporcja Y / X — wartość</sys:String>
+    <sys:String x:Key="S_Rotation">Obrót osi</sys:String>
+    <sys:String x:Key="S_CurveMode">Tryb krzywej</sys:String>
+    <sys:String x:Key="S_CurveModeValue">Tryb: {0}</sys:String>
+    <sys:String x:Key="S_Gain">Gain</sys:String>
+    <sys:String x:Key="S_GainTooltip">Kształt Gain lub czułości. Akcelerację wyłącza tryb OFF.</sys:String>
+    <sys:String x:Key="S_CapType">Typ limitu</sys:String>
+    <sys:String x:Key="S_CapInput">Limit wejściowy</sys:String>
+    <sys:String x:Key="S_CapInputInput">Limit wejściowy — wartość</sys:String>
+    <sys:String x:Key="S_CapOutput">Limit wyjściowy</sys:String>
+    <sys:String x:Key="S_CapOutputInput">Limit wyjściowy — wartość</sys:String>
+    <sys:String x:Key="S_InputOffset">Offset wejścia</sys:String>
+    <sys:String x:Key="S_InputOffsetInput">Offset wejścia — wartość</sys:String>
+    <sys:String x:Key="S_ShowLastMouseMove">Pokaż ostatni ruch</sys:String>
+    <sys:String x:Key="S_ShowVelocity">Pokaż prędkość</sys:String>
+    <sys:String x:Key="S_ShowGain">Pokaż wzmocnienie</sys:String>
+    <sys:String x:Key="S_ResetDefaults">Przywróć domyślne</sys:String>
+    <sys:String x:Key="S_ModeLinear">Linear</sys:String>
+    <sys:String x:Key="S_ModeClassic">Classic</sys:String>
+    <sys:String x:Key="S_ModeNatural">Natural</sys:String>
+    <sys:String x:Key="S_Power">Power</sys:String>
+    <sys:String x:Key="S_DecayRate">Decay Rate</sys:String>
+    <sys:String x:Key="S_ModeOff">OFF</sys:String>
+    <sys:String x:Key="S_CapOutputOnly">Output</sys:String>
+    <sys:String x:Key="S_CapInputOnly">Input</sys:String>
+    <sys:String x:Key="S_CapBoth">Both</sys:String>
+    <sys:String x:Key="S_Rotation0">0°</sys:String>
+    <sys:String x:Key="S_Rotation90">90°</sys:String>
+    <sys:String x:Key="S_Rotation180">180°</sys:String>
+    <sys:String x:Key="S_Rotation270">270°</sys:String>
+    <sys:String x:Key="S_CurveOffHint">Akceleracja wyłączona. Mnożnik nie zależy od prędkości ruchu.</sys:String>
+    <sys:String x:Key="S_CurveTitle">Krzywa odpowiedzi</sys:String>
+    <sys:String x:Key="S_CurveAxis">Mnożnik</sys:String>
+    <sys:String x:Key="S_CurveAxisX">Prędkość myszy · counts/ms</sys:String>
+    <sys:String x:Key="S_CurveHint">Wolny ruch → precyzja. Szybki ruch → wyższy mnożnik.</sys:String>
+    <sys:String x:Key="S_AutoStart">Start z Windows</sys:String>
+    <sys:String x:Key="S_StartInTray">Start w zasobniku</sys:String>
+    <sys:String x:Key="S_StartInfo">Po schowaniu panel nie odświeża wykresu.</sys:String>
+    <sys:String x:Key="S_Preview">Podgląd · sterownik niepodłączony</sys:String>
+    <sys:String x:Key="S_PreviewDetail">Ta wersja nie zmienia ruchu myszy.</sys:String>
+    <sys:String x:Key="S_Save">Zapisz</sys:String>
+    <sys:String x:Key="S_SaveTooltip">Zapisz bieżący szkic lokalnie — nie aktywuje sterownika</sys:String>
+    <sys:String x:Key="S_Export">Eksportuj</sys:String>
+    <sys:String x:Key="S_ExportTooltip">Eksportuj profil 0Accel do pliku JSON — nie aktywuje sterownika</sys:String>
+    <sys:String x:Key="S_Import">Importuj</sys:String>
+    <sys:String x:Key="S_ImportTooltip">Wczytaj profil 0Accel z pliku JSON do panelu — nie aktywuje sterownika</sys:String>
+    <sys:String x:Key="M_ImportOk">Ustawienia zostały zaimportowane.</sys:String>
+    <sys:String x:Key="M_ExportOk">Ustawienia wyeksportowano.</sys:String>
+    <sys:String x:Key="M_ImportFailed">Nie udało się wczytać ustawień z pliku.</sys:String>
+    <sys:String x:Key="M_ExportFailed">Nie udało się zapisać ustawień do pliku.</sys:String>
+    <sys:String x:Key="M_SettingsPath">Plik ustawień: {0}</sys:String>
+    <sys:String x:Key="S_DeviceNotFound">Nie znaleziono myszy</sys:String>
+    <sys:String x:Key="S_Measuring">… Hz</sys:String>
+    <sys:String x:Key="S_Unknown">— Hz</sys:String>
+    <sys:String x:Key="S_AutoStartTooltip">Opcjonalny autostart dla bieżącego użytkownika</sys:String>
+    <sys:String x:Key="S_StartInTrayTooltip">Przy autostarcie nie otwieraj panelu</sys:String>
+    <Style TargetType="TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+      <Setter Property="FontSize" Value="13"/>
+    </Style>
+    <Style TargetType="ToolTip">
+      <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+      <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+      <Setter Property="Padding" Value="12,8"/>
+    </Style>
+    <Style TargetType="Button">
+      <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="Padding" Value="15,9"/>
+      <Setter Property="HorizontalContentAlignment" Value="Center"/>
+      <Setter Property="VerticalContentAlignment" Value="Center"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="FontSize" Value="12"/>
+      <Setter Property="Template"><Setter.Value>
+        <ControlTemplate TargetType="Button">
+          <Border x:Name="Frame" CornerRadius="5" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Frame" Property="Background" Value="{DynamicResource HoverBrush}"/></Trigger>
+            <Trigger Property="IsEnabled" Value="False"><Setter Property="Opacity" Value="0.4"/></Trigger>
+            <Trigger Property="IsPressed" Value="True"><Setter TargetName="Frame" Property="Opacity" Value="0.65"/></Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value></Setter>
+    </Style>
+    <Style x:Key="QuietButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="Foreground" Value="{DynamicResource MutedBrush}"/>
+      <Setter Property="Height" Value="32"/>
+      <Setter Property="Padding" Value="10,0"/>
+      <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style x:Key="IconButton" TargetType="Button" BasedOn="{StaticResource QuietButton}">
+      <Setter Property="Width" Value="32"/>
+      <Setter Property="Padding" Value="0"/>
+    </Style>
+    <Style TargetType="TextBox">
+      <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+      <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+      <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+      <Setter Property="CaretBrush" Value="{DynamicResource TextBrush}"/>
+      <Setter Property="SelectionBrush" Value="{DynamicResource SubtleBrush}"/>
+      <Setter Property="Padding" Value="8,5"/>
+      <Setter Property="MinHeight" Value="36"/>
+      <Setter Property="FontFamily" Value="Consolas"/>
+      <Setter Property="VerticalContentAlignment" Value="Center"/>
+      <Setter Property="Template"><Setter.Value>
+        <ControlTemplate TargetType="TextBox">
+          <Border x:Name="Frame" CornerRadius="4" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+            <!-- TextBox already passes Padding to its content host. A second margin clips short fields. -->
+            <ScrollViewer x:Name="PART_ContentHost"/>
+          </Border>
+        </ControlTemplate>
+      </Setter.Value></Setter>
+    </Style>
+    <Style TargetType="CheckBox">
+      <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+      <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="Template"><Setter.Value>
+        <ControlTemplate TargetType="CheckBox">
+          <StackPanel Orientation="Horizontal">
+            <Border x:Name="Switch" Width="30" Height="18" CornerRadius="9" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" VerticalAlignment="Center">
+              <Ellipse x:Name="Dot" Width="10" Height="10" Fill="{DynamicResource MutedBrush}" HorizontalAlignment="Left" Margin="3,0"/>
+            </Border>
+            <ContentPresenter Margin="10,0,0,0" VerticalAlignment="Center"/>
+          </StackPanel>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+              <Setter TargetName="Switch" Property="Background" Value="{DynamicResource TextBrush}"/>
+              <Setter TargetName="Dot" Property="Fill" Value="{DynamicResource BackgroundBrush}"/>
+              <Setter TargetName="Dot" Property="HorizontalAlignment" Value="Right"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value></Setter>
+    </Style>
+    <Style TargetType="Slider">
+      <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+      <Setter Property="Height" Value="28"/>
+      <Setter Property="IsMoveToPointEnabled" Value="True"/>
+      <Setter Property="Template"><Setter.Value>
+        <ControlTemplate TargetType="Slider">
+          <Grid>
+            <Border Height="2" Background="{DynamicResource BorderBrush}" VerticalAlignment="Center"/>
+            <Track x:Name="PART_Track" Minimum="{TemplateBinding Minimum}" Maximum="{TemplateBinding Maximum}" Value="{TemplateBinding Value}" IsDirectionReversed="False">
+              <Track.DecreaseRepeatButton><RepeatButton Command="Slider.DecreaseLarge" Focusable="False"><RepeatButton.Template><ControlTemplate><Border Height="2" Background="{DynamicResource TextBrush}" VerticalAlignment="Center"/></ControlTemplate></RepeatButton.Template></RepeatButton></Track.DecreaseRepeatButton>
+              <Track.Thumb><Thumb Width="14" Cursor="Hand"><Thumb.Template><ControlTemplate><Border Width="10" Height="10" CornerRadius="5" Background="{DynamicResource TextBrush}" VerticalAlignment="Center"/></ControlTemplate></Thumb.Template></Thumb></Track.Thumb>
+              <Track.IncreaseRepeatButton><RepeatButton Command="Slider.IncreaseLarge" Focusable="False"><RepeatButton.Template><ControlTemplate><Border Background="Transparent"/></ControlTemplate></RepeatButton.Template></RepeatButton></Track.IncreaseRepeatButton>
+            </Track>
+          </Grid>
+        </ControlTemplate>
+      </Setter.Value></Setter>
+    </Style>
+    <Style TargetType="ComboBoxItem">
+      <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="Padding" Value="10,7"/>
+      <Setter Property="FontSize" Value="12"/>
+      <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+      <Setter Property="Template"><Setter.Value>
+        <ControlTemplate TargetType="ComboBoxItem">
+          <Border x:Name="ItemFrame" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" CornerRadius="3">
+            <ContentPresenter/>
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsSelected" Value="True"><Setter TargetName="ItemFrame" Property="Background" Value="{DynamicResource HoverBrush}"/></Trigger>
+            <Trigger Property="IsHighlighted" Value="True"><Setter TargetName="ItemFrame" Property="Background" Value="{DynamicResource BorderBrush}"/></Trigger>
+            <Trigger Property="IsEnabled" Value="False"><Setter Property="Opacity" Value="0.4"/></Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value></Setter>
+    </Style>
+    <Style TargetType="ComboBox">
+      <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+      <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+      <Setter Property="FontSize" Value="12"/>
+      <Setter Property="Height" Value="30"/>
+      <Setter Property="VerticalAlignment" Value="Center"/>
+      <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+      <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+      <Setter Property="Template"><Setter.Value>
+        <ControlTemplate TargetType="ComboBox">
+          <Grid>
+            <ToggleButton x:Name="DropDownToggle" Focusable="False" ClickMode="Press" IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}">
+              <ToggleButton.Template><ControlTemplate TargetType="ToggleButton">
+                <Border x:Name="Frame" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="4">
+                  <Path Data="M 0,0 L 4,4 L 8,0" Stroke="{DynamicResource MutedBrush}" StrokeThickness="1" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                </Border>
+                <ControlTemplate.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Frame" Property="Background" Value="{DynamicResource HoverBrush}"/></Trigger></ControlTemplate.Triggers>
+              </ControlTemplate></ToggleButton.Template>
+            </ToggleButton>
+            <ContentPresenter Margin="10,0,27,0" VerticalAlignment="Center" HorizontalAlignment="Left" IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"/>
+            <Popup x:Name="PART_Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="None">
+              <Border x:Name="DropDownFrame" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="4" Padding="3" MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}" Margin="0,3,0,0">
+                <ScrollViewer MaxHeight="280" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" CanContentScroll="True">
+                  <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained"/>
+                </ScrollViewer>
+              </Border>
+            </Popup>
+          </Grid>
+          <ControlTemplate.Triggers><Trigger Property="IsEnabled" Value="False"><Setter Property="Opacity" Value="0.4"/></Trigger></ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value></Setter>
+    </Style>
+    <Style TargetType="Expander">
+      <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+      <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+      <Setter Property="Template"><Setter.Value>
+        <ControlTemplate TargetType="Expander">
+          <StackPanel>
+            <ToggleButton x:Name="HeaderToggle" Content="{TemplateBinding Header}" Foreground="{TemplateBinding Foreground}" IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" FocusVisualStyle="{x:Null}" Cursor="Hand">
+              <ToggleButton.Template><ControlTemplate TargetType="ToggleButton">
+                <Border Background="Transparent" Padding="0,8">
+                  <Grid>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="18"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                    <Path x:Name="Arrow" Data="M 0,0 L 4,4 L 0,8" Stroke="{DynamicResource MutedBrush}" StrokeThickness="1.2" VerticalAlignment="Center"/>
+                    <ContentPresenter Grid.Column="1" VerticalAlignment="Center"/>
+                  </Grid>
+                </Border>
+                <ControlTemplate.Triggers>
+                  <Trigger Property="IsChecked" Value="True"><Setter TargetName="Arrow" Property="Data" Value="M 0,0 L 4,4 L 8,0"/></Trigger>
+                </ControlTemplate.Triggers>
+              </ControlTemplate></ToggleButton.Template>
+            </ToggleButton>
+            <ContentPresenter x:Name="ExpandedContent" Visibility="Collapsed"/>
+          </StackPanel>
+          <ControlTemplate.Triggers><Trigger Property="IsExpanded" Value="True"><Setter TargetName="ExpandedContent" Property="Visibility" Value="Visible"/></Trigger></ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value></Setter>
+    </Style>
+    <Style x:Key="SettingsScrollBar" TargetType="ScrollBar">
+      <Setter Property="Width" Value="10"/>
+      <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+      <Setter Property="Template"><Setter.Value>
+        <ControlTemplate TargetType="ScrollBar">
+          <Track x:Name="PART_Track" Orientation="Vertical" IsDirectionReversed="True">
+            <Track.DecreaseRepeatButton><RepeatButton Command="ScrollBar.PageUpCommand" Focusable="False"><RepeatButton.Template><ControlTemplate><Border Background="Transparent"/></ControlTemplate></RepeatButton.Template></RepeatButton></Track.DecreaseRepeatButton>
+            <Track.Thumb><Thumb MinHeight="28"><Thumb.Template><ControlTemplate><Border Background="{DynamicResource SubtleBrush}" Width="3" CornerRadius="1.5" HorizontalAlignment="Center"/></ControlTemplate></Thumb.Template></Thumb></Track.Thumb>
+            <Track.IncreaseRepeatButton><RepeatButton Command="ScrollBar.PageDownCommand" Focusable="False"><RepeatButton.Template><ControlTemplate><Border Background="Transparent"/></ControlTemplate></RepeatButton.Template></RepeatButton></Track.IncreaseRepeatButton>
+          </Track>
+        </ControlTemplate>
+      </Setter.Value></Setter>
+    </Style>
+    <Style x:Key="SettingsScroller" TargetType="ScrollViewer">
+      <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+      <Setter Property="Template"><Setter.Value>
+        <ControlTemplate TargetType="ScrollViewer">
+          <Grid>
+            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="10"/></Grid.ColumnDefinitions>
+            <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" CanContentScroll="{TemplateBinding CanContentScroll}" Margin="0,0,12,0"/>
+            <ScrollBar x:Name="PART_VerticalScrollBar" Grid.Column="1" Style="{StaticResource SettingsScrollBar}" Orientation="Vertical" Minimum="0" Maximum="{TemplateBinding ScrollableHeight}" ViewportSize="{TemplateBinding ViewportHeight}" Value="{Binding VerticalOffset, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"/>
+          </Grid>
+        </ControlTemplate>
+      </Setter.Value></Setter>
+    </Style>
+  </Application.Resources>
+</Application>
+
+

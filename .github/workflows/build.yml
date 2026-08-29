@@ -1,0 +1,60 @@
+name: build-and-test
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Download pinned compiler and verify checksum
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force .tools | Out-Null
+          Invoke-WebRequest 'https://ziglang.org/download/0.15.2/zig-x86_64-windows-0.15.2.zip' -OutFile '.tools/zig.zip'
+          if ((Get-FileHash '.tools/zig.zip' -Algorithm SHA256).Hash.ToLowerInvariant() -ne '3a0ed1e8799a2f8ce2a6e6290a9ff22e6906f8227865911fb7ddedc3cc14cb0c') { throw 'Checksum mismatch' }
+          Expand-Archive '.tools/zig.zip' '.tools'
+      - name: Build and test
+        shell: pwsh
+        run: |
+          if ($env:GITHUB_REF_TYPE -eq 'tag') {
+            $version = ([xml](Get-Content 'src/ZeroAccel/ZeroAccel.csproj' -Raw)).Project.PropertyGroup.Version
+            if ($env:GITHUB_REF_NAME -ne "v$version") { throw "Tag $env:GITHUB_REF_NAME does not match version $version" }
+          }
+          ./scripts/test-workspace-layout.ps1
+          ./scripts/package-source.ps1 -VerifyOnly
+          ./scripts/build.ps1 -Sanitize
+      - name: Check release boundary and package preview
+        shell: pwsh
+        run: ./scripts/test-release-boundary.ps1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: 0Accel-windows-x64-preview
+          path: artifacts/app/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: 0Accel-preview-packages
+          path: artifacts/releases/
+
+  release:
+    needs: windows
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: 0Accel-preview-packages
+          path: releases
+      - name: Create GitHub pre-release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          gh release create "$GITHUB_REF_NAME"
+          releases/*.zip releases/*.sha256
+          --verify-tag --prerelease --generate-notes
+          --title "0Accel $GITHUB_REF_NAME"

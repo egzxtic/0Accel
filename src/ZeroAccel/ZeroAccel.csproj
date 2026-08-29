@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PlatformTarget>x64</PlatformTarget>
+    <AssemblyName>0Accel.Panel</AssemblyName>
+    <RootNamespace>ZeroAccel</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>..\..\artifacts\native\0Accel.ico</ApplicationIcon>
+    <DebugType Condition="'$(Configuration)' == 'Release'">none</DebugType>
+    <Version>0.4.0</Version>
+    <Description>Independent settings panel for the original Raw Accel driver.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="..\..\artifacts\native\0Accel.RawAccel.dll" Link="0Accel.RawAccel.dll" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="..\..\tools\RawAccelBridge\upstream\LICENSE" Link="licenses/RawAccel-MIT.txt" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Resource Include="..\..\assets\branding\wordmark-black.png" Link="Brand/wordmark-black.png" />
+    <Resource Include="..\..\assets\branding\wordmark-white.png" Link="Brand/wordmark-white.png" />
+    <Resource Include="..\..\assets\branding\icon-black.png" Link="Brand/icon-black.png" />
+    <Resource Include="..\..\assets\branding\icon-white.png" Link="Brand/icon-white.png" />
+  </ItemGroup>
+</Project>

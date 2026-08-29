@@ -1,0 +1,26 @@
+#include <windows.h>
+101 ICON "artifacts/native/0Accel.ico"
+1 VERSIONINFO
+FILEVERSION 0,4,0,0
+PRODUCTVERSION 0,4,0,0
+FILEOS VOS_NT_WINDOWS32
+FILETYPE VFT_APP
+BEGIN
+  BLOCK "StringFileInfo"
+  BEGIN
+    BLOCK "040904b0"
+    BEGIN
+      VALUE "CompanyName", "0Accel contributors"
+      VALUE "FileDescription", "0Accel native tray host"
+      VALUE "FileVersion", "0.4.0"
+      VALUE "InternalName", "0Accel"
+      VALUE "OriginalFilename", "0Accel.exe"
+      VALUE "ProductName", "0Accel"
+      VALUE "ProductVersion", "0.4.0"
+    END
+  END
+  BLOCK "VarFileInfo"
+  BEGIN
+    VALUE "Translation", 0x409, 1200
+  END
+END

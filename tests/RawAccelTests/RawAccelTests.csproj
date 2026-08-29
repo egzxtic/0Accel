@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0-windows</TargetFramework><Nullable>enable</Nullable><ImplicitUsings>enable</ImplicitUsings><TreatWarningsAsErrors>true</TreatWarningsAsErrors><PlatformTarget>x64</PlatformTarget></PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../src/ZeroAccel/RawAccelProtocol.cs" Link="RawAccelProtocol.cs"/>
+    <Compile Include="../../src/ZeroAccel/RawAccelClient.cs" Link="RawAccelClient.cs"/>
+    <Compile Include="../../src/ZeroAccel/Settings.cs" Link="Settings.cs"/>
+    <Compile Include="../../src/ZeroAccel/CurveConfig.cs" Link="CurveConfig.cs"/>
+    <None Include="../../artifacts/native/0Accel.RawAccel.dll" Link="0Accel.RawAccel.dll" CopyToOutputDirectory="Always"/>
+  </ItemGroup>
+</Project>

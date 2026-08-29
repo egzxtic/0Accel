@@ -1,0 +1,20 @@
+{
+  "commit": "53a721345617a1e29f3a16750cbdf807040cf44e",
+  "files": {
+    "accel-classic.hpp": "b195bce2815c827b0a3720a6c73980ff0dd13bf4925fe62b2351fa3f60479786",
+    "accel-jump.hpp": "25a18e889be658e4e14907541ef60a5175742c475ed9c6234be9d2f84dea42c2",
+    "accel-lookup.hpp": "c31df521dee457d7612d609e884208e3ac8b3356d4a73763b50eb5b2e3299fc8",
+    "accel-natural.hpp": "c83a39fe2669874c06dafcf9f9f451669cc8ff7d863d5fbca6135e7b879399d0",
+    "accel-noaccel.hpp": "f5eb9c08238ed6749c7832cc71ed9d91a6064dd23396ccaedef775dfbe8d0d29",
+    "accel-power.hpp": "c1d3eecdc1a9e9b7a230e7870bc285f6374edce17dab5f17c9b80648db9c917d",
+    "accel-synchronous.hpp": "90b290e3550df81e27ab53cfad81008c84759bfa8ea3951891d1d525912b9dcc",
+    "accel-union.hpp": "4f47775ae1f7f7ab26b6248e3e2d676e430b3d6cbd8776e0be91fb040361a9d7",
+    "LICENSE": "dfc5190412a3d6db6632d28e54bb2da60564c340a973a252f7b1c2b8e50cc85f",
+    "math-vec2.hpp": "10608c8ed47129b05e633b08276aca639019b6866519fbc655c9473e1cf2ef1a",
+    "rawaccel-base.hpp": "a8e9a8d5cd813f807ea4228430b6f46beaac40748469e45cca5919de0042b13d",
+    "rawaccel-validate.hpp": "9d8d13e3db93dcf03578a8eec52e9427f8018ae7f997b9ff08d05b4c76dd7967",
+    "rawaccel-version.h": "4e39eba3ba82ef43823a84de7878e2ef942264c338ef8e144ae921f59daa7029",
+    "rawaccel.hpp": "c293258ee53ca82de6cb930bf946615e82e084ab62f5f43d159f0021f0b4f011",
+    "utility.hpp": "9c12ed4b689c68f851cd5ceca48bb00b8573b0e6c210b1c8f4989263dc42db45"
+  }
+}

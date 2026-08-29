@@ -1,0 +1,235 @@
+<Window x:Class="ZeroAccel.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:ZeroAccel" xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+  Title="0Accel" Width="900" Height="720" MinWidth="780" MinHeight="650" WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="CanResize" Background="{DynamicResource BackgroundBrush}" Foreground="{DynamicResource TextBrush}" FontFamily="Segoe UI" UseLayoutRounding="True" SnapsToDevicePixels="True">
+  <shell:WindowChrome.WindowChrome><shell:WindowChrome CaptionHeight="64" ResizeBorderThickness="6" CornerRadius="0" GlassFrameThickness="0" UseAeroCaptionButtons="False"/></shell:WindowChrome.WindowChrome>
+  <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+    <Grid>
+      <Grid.RowDefinitions><RowDefinition Height="64"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+      <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
+        <Grid Margin="32,0,18,0">
+          <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <Grid VerticalAlignment="Center">
+              <TextBlock x:Name="LogoText" Text="0Accel" FontSize="27" FontWeight="SemiBold" FontFamily="Segoe UI Variable Display, Segoe UI"/>
+              <Image x:Name="LogoImage" Width="132" Height="32" Stretch="Uniform" VerticalAlignment="Center" Visibility="Collapsed"/>
+            </Grid>
+            <TextBlock x:Name="WindowSizeLabel" Text="(1040×720)" FontFamily="Consolas" FontSize="11" Foreground="{DynamicResource SubtleBrush}" VerticalAlignment="Center" Margin="14,4,0,0" ToolTip="{DynamicResource S_WindowSizeTooltip}"/>
+          </StackPanel>
+          <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" shell:WindowChrome.IsHitTestVisibleInChrome="True">
+            <Button x:Name="AboutButton" Click="AboutClicked" Style="{StaticResource IconButton}" Margin="0,0,8,0" ToolTip="{DynamicResource S_AboutTooltip}" AutomationProperties.Name="{DynamicResource S_About}">
+              <Grid Width="16" Height="16">
+                <Ellipse Margin="1" Stroke="{DynamicResource MutedBrush}" StrokeThickness="1.25"/>
+                <Ellipse Width="1.5" Height="1.5" Fill="{DynamicResource MutedBrush}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,4,0,0"/>
+                <Path Data="M8,7.5 V11" Stroke="{DynamicResource MutedBrush}" StrokeThickness="1.25" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+              </Grid>
+            </Button>
+            <Button x:Name="ThemeButton" Click="ThemeClicked" Style="{StaticResource IconButton}" Margin="0,0,8,0" ToolTip="{DynamicResource S_TooltipTheme}" AutomationProperties.Name="{DynamicResource S_TooltipTheme}">
+              <TextBlock x:Name="ThemeGlyph" FontFamily="Segoe UI Symbol" FontSize="15" Text="☀" TextAlignment="Center" Foreground="{DynamicResource MutedBrush}"/>
+            </Button>
+            <Button x:Name="MinimizeButton" Click="MinimizeClicked" Style="{StaticResource IconButton}" Margin="0,0,8,0" ToolTip="{DynamicResource S_TooltipMinimize}" AutomationProperties.Name="{DynamicResource S_TooltipMinimize}"><Path Data="M 0,0 L 10,0" Stroke="{DynamicResource MutedBrush}" StrokeThickness="1"/></Button>
+            <Button x:Name="CloseButton" Click="CloseClicked" Style="{StaticResource IconButton}" ToolTip="{DynamicResource S_TooltipClose}" AutomationProperties.Name="{DynamicResource S_TooltipClose}"><Path Data="M 0,0 L 9,9 M 9,0 L 0,9" Stroke="{DynamicResource MutedBrush}" StrokeThickness="1"/></Button>
+          </StackPanel>
+        </Grid>
+      </Border>
+      <Grid Grid.Row="1" Margin="28,18,28,14">
+        <Grid.RowDefinitions><RowDefinition Height="64"/><RowDefinition Height="*"/><RowDefinition Height="44"/></Grid.RowDefinitions>
+        <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1" Padding="0,0,0,12">
+          <Grid VerticalAlignment="Center">
+            <Grid.RowDefinitions><RowDefinition Height="18"/><RowDefinition Height="32"/></Grid.RowDefinitions>
+            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+            <TextBlock Text="{DynamicResource S_DeviceHeader}" FontSize="10" Foreground="{DynamicResource SubtleBrush}"/>
+            <DockPanel Grid.Row="1" LastChildFill="True">
+              <Button x:Name="RefreshDevicesButton" Click="RefreshDevicesClicked" DockPanel.Dock="Right" Style="{StaticResource IconButton}" Margin="8,0,16,0" ToolTip="{DynamicResource S_RefreshDevicesTooltip}" AutomationProperties.Name="{DynamicResource S_RefreshDevicesTooltip}">
+                <Grid Width="16" Height="16">
+                  <Path Data="M13,5 A5.5,5.5 0 1 0 13.5,10 M9,5 H13 V1" Stroke="{DynamicResource MutedBrush}" StrokeThickness="1.25" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                </Grid>
+              </Button>
+              <Button x:Name="DeviceButton" Content="{DynamicResource S_DeviceLoading}" Click="ChooseDeviceClicked" Style="{StaticResource QuietButton}" HorizontalContentAlignment="Stretch" Foreground="{DynamicResource TextBrush}" ToolTip="{DynamicResource S_DeviceTooltip}" AutomationProperties.Name="{DynamicResource S_DeviceTooltip}">
+                <Button.ContentTemplate><DataTemplate>
+                  <Grid>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="16"/></Grid.ColumnDefinitions>
+                    <TextBlock Text="{Binding}" FontSize="12" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" VerticalAlignment="Center" ToolTip="{Binding}"/>
+                    <Path Grid.Column="1" Data="M0,0 L4,4 L8,0" Stroke="{DynamicResource MutedBrush}" StrokeThickness="1" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                  </Grid>
+                </DataTemplate></Button.ContentTemplate>
+              </Button>
+            </DockPanel>
+            <TextBlock Grid.Column="1" Text="{DynamicResource S_DpiManual}" FontSize="10" Foreground="{DynamicResource SubtleBrush}"/>
+            <TextBox x:Name="DpiBox" Grid.Row="1" Grid.Column="1" Width="88" Height="30" MinHeight="30" Padding="8,4" VerticalAlignment="Center" MaxLength="10" TextAlignment="Center" TextChanged="SettingChanged" ToolTip="{DynamicResource S_DpiTooltip}" AutomationProperties.Name="{DynamicResource S_DpiTooltip}"/>
+            <TextBlock Grid.Column="2" Text="{DynamicResource S_PollingRate}" FontSize="10" Foreground="{DynamicResource SubtleBrush}" Margin="16,0,0,0"/>
+            <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal" Margin="16,0,0,0" MinWidth="176">
+              <TextBlock x:Name="PollingLabel" Text="{DynamicResource S_Unknown}" FontFamily="Consolas" FontSize="14" VerticalAlignment="Center" MinWidth="78"/>
+              <Button x:Name="MeasureButton" Content="{DynamicResource S_Measure}" Click="MeasureClicked" Style="{StaticResource QuietButton}" MinWidth="72" ToolTip="{DynamicResource S_MeasureTooltip}" AutomationProperties.Name="{DynamicResource S_Measure}"/>
+            </StackPanel>
+          </Grid>
+        </Border>
+        <Grid Grid.Row="1" Margin="0,16,0,12">
+          <Grid.ColumnDefinitions><ColumnDefinition Width="300"/><ColumnDefinition Width="20"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+          <Grid x:Name="SettingsPanel">
+            <Grid.Resources>
+              <!-- 30px fields + 6px spacing; shared by pinned and scrolling rows. -->
+              <Style x:Key="ParameterRow" TargetType="Grid"><Setter Property="Height" Value="36"/></Style>
+            </Grid.Resources>
+            <Grid.RowDefinitions><RowDefinition Height="36"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="36"/></Grid.RowDefinitions>
+            <TextBlock Text="{DynamicResource S_SectionAcceleration}" FontSize="19" FontWeight="Medium"/>
+            <Grid Grid.Row="1" Style="{StaticResource ParameterRow}" Margin="0,0,22,0">
+              <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="112"/></Grid.ColumnDefinitions>
+              <TextBlock Text="{DynamicResource S_CurveMode}" FontSize="12" VerticalAlignment="Center"/>
+              <ComboBox x:Name="CurveModeCombo" Grid.Column="1" VerticalAlignment="Center" SelectionChanged="SelectionChanged" ToolTip="{DynamicResource S_CurveMode}" AutomationProperties.Name="{DynamicResource S_CurveMode}">
+                <ComboBoxItem Content="{DynamicResource S_ModeOff}" Tag="off"/><ComboBoxItem Content="{DynamicResource S_ModeLinear}" Tag="linear"/><ComboBoxItem Content="{DynamicResource S_ModeClassic}" Tag="classic"/><ComboBoxItem Content="{DynamicResource S_ModeNatural}" Tag="natural"/>
+              </ComboBox>
+            </Grid>
+            <ScrollViewer x:Name="SettingsScroll" Grid.Row="2" Style="{StaticResource SettingsScroller}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" CanContentScroll="False" Focusable="False">
+              <StackPanel x:Name="SettingsContent">
+                <StackPanel.Resources>
+                  <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}"><Setter Property="FontSize" Value="12"/></Style>
+                  <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}"><Setter Property="Height" Value="30"/><Setter Property="MinHeight" Value="30"/><Setter Property="Padding" Value="8,4"/><Setter Property="VerticalAlignment" Value="Center"/></Style>
+                  <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}"><Setter Property="VerticalAlignment" Value="Center"/></Style>
+                </StackPanel.Resources>
+                <Grid x:Name="SensitivityRow" Style="{StaticResource ParameterRow}">
+                  <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="112"/></Grid.ColumnDefinitions>
+                  <StackPanel VerticalAlignment="Center" Margin="0,0,16,0">
+                    <TextBlock Text="{DynamicResource S_Sensitivity}"/>
+                    <Slider x:Name="SensitivitySlider" Height="16" Minimum="0.1" Maximum="24" Value="1" TickFrequency="0.01" IsSnapToTickEnabled="True" SmallChange="0.01" LargeChange="0.1" ValueChanged="SliderChanged" Margin="0,1,0,0" AutomationProperties.Name="{DynamicResource S_Sensitivity}"/>
+                  </StackPanel>
+                  <TextBox x:Name="SensitivityBox" Grid.Column="1" Text="1.00" TextAlignment="Right" LostKeyboardFocus="NumberCommitted" KeyDown="NumberKeyDown" AutomationProperties.Name="{DynamicResource S_SensitivityInput}"/>
+                </Grid>
+                <Grid x:Name="YxRatioRow" Style="{StaticResource ParameterRow}">
+                  <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="112"/></Grid.ColumnDefinitions>
+                  <TextBlock Text="{DynamicResource S_YxRatio}" VerticalAlignment="Center"/>
+                  <TextBox x:Name="YxRatioBox" Grid.Column="1" TextAlignment="Right" LostKeyboardFocus="AdvancedNumberCommitted" KeyDown="NumberKeyDown" AutomationProperties.Name="{DynamicResource S_YxRatioInput}"/>
+                </Grid>
+                <Grid x:Name="RotationRow" Style="{StaticResource ParameterRow}">
+                  <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="112"/></Grid.ColumnDefinitions>
+                  <TextBlock Text="{DynamicResource S_Rotation}" VerticalAlignment="Center"/>
+                  <ComboBox x:Name="RotationCombo" Grid.Column="1" SelectionChanged="SelectionChanged" AutomationProperties.Name="{DynamicResource S_Rotation}">
+                    <ComboBoxItem Content="{DynamicResource S_Rotation0}" Tag="0"/><ComboBoxItem Content="{DynamicResource S_Rotation90}" Tag="90"/><ComboBoxItem Content="{DynamicResource S_Rotation180}" Tag="180"/><ComboBoxItem Content="{DynamicResource S_Rotation270}" Tag="270"/>
+                  </ComboBox>
+                </Grid>
+                <!-- The 18px switch keeps the same 6px visible gap as 30px fields. -->
+                <Grid x:Name="GainRow" Height="24">
+                  <CheckBox x:Name="GainCheck" Content="{DynamicResource S_Gain}" Height="18" Click="CheckChanged" VerticalAlignment="Center" ToolTip="{DynamicResource S_GainTooltip}"/>
+                </Grid>
+                <Grid x:Name="AccelerationRow" Style="{StaticResource ParameterRow}">
+                  <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="112"/></Grid.ColumnDefinitions>
+                  <StackPanel VerticalAlignment="Center" Margin="0,0,16,0">
+                    <TextBlock Text="{DynamicResource S_AccelStrength}"/>
+                    <Slider x:Name="AccelerationSlider" Height="16" Minimum="0" Maximum="0.2" Value="0.02" TickFrequency="0.001" IsSnapToTickEnabled="True" SmallChange="0.001" LargeChange="0.01" ValueChanged="SliderChanged" Margin="0,1,0,0" AutomationProperties.Name="{DynamicResource S_AccelStrength}"/>
+                  </StackPanel>
+                  <TextBox x:Name="AccelerationBox" Grid.Column="1" Text="0.020" TextAlignment="Right" LostKeyboardFocus="NumberCommitted" KeyDown="NumberKeyDown" AutomationProperties.Name="{DynamicResource S_AccelStrengthInput}"/>
+                </Grid>
+                <Grid x:Name="DecayRow" Style="{StaticResource ParameterRow}">
+                  <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="112"/></Grid.ColumnDefinitions>
+                  <TextBlock Text="{DynamicResource S_DecayRate}" VerticalAlignment="Center"/>
+                  <TextBox x:Name="DecayBox" Grid.Column="1" TextAlignment="Right" LostKeyboardFocus="AdvancedNumberCommitted" KeyDown="NumberKeyDown" AutomationProperties.Name="{DynamicResource S_DecayRate}"/>
+                </Grid>
+                <Grid x:Name="CapTypeRow" Style="{StaticResource ParameterRow}">
+                  <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="112"/></Grid.ColumnDefinitions>
+                  <TextBlock Text="{DynamicResource S_CapType}" VerticalAlignment="Center"/>
+                  <ComboBox x:Name="CapTypeCombo" Grid.Column="1" SelectionChanged="SelectionChanged" AutomationProperties.Name="{DynamicResource S_CapType}">
+                    <ComboBoxItem Content="{DynamicResource S_CapOutputOnly}" Tag="Output"/><ComboBoxItem Content="{DynamicResource S_CapInputOnly}" Tag="Input"/><ComboBoxItem Content="{DynamicResource S_CapBoth}" Tag="Both"/>
+                  </ComboBox>
+                </Grid>
+                <Grid x:Name="CapOutputRow" Style="{StaticResource ParameterRow}">
+                  <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="112"/></Grid.ColumnDefinitions>
+                  <TextBlock Text="{DynamicResource S_CapOutput}" VerticalAlignment="Center"/>
+                  <TextBox x:Name="CapOutputBox" Grid.Column="1" TextAlignment="Right" LostKeyboardFocus="AdvancedNumberCommitted" KeyDown="NumberKeyDown" AutomationProperties.Name="{DynamicResource S_CapOutputInput}"/>
+                </Grid>
+                <Grid x:Name="CapInputRow" Style="{StaticResource ParameterRow}">
+                  <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="112"/></Grid.ColumnDefinitions>
+                  <TextBlock Text="{DynamicResource S_CapInput}" VerticalAlignment="Center"/>
+                  <TextBox x:Name="CapInputBox" Grid.Column="1" TextAlignment="Right" LostKeyboardFocus="AdvancedNumberCommitted" KeyDown="NumberKeyDown" AutomationProperties.Name="{DynamicResource S_CapInputInput}"/>
+                </Grid>
+                <Grid x:Name="InputOffsetRow" Style="{StaticResource ParameterRow}">
+                  <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="112"/></Grid.ColumnDefinitions>
+                  <TextBlock Text="{DynamicResource S_InputOffset}" VerticalAlignment="Center"/>
+                  <TextBox x:Name="InputOffsetBox" Grid.Column="1" TextAlignment="Right" LostKeyboardFocus="AdvancedNumberCommitted" KeyDown="NumberKeyDown" AutomationProperties.Name="{DynamicResource S_InputOffsetInput}"/>
+                </Grid>
+                <Grid x:Name="LimitRow" Style="{StaticResource ParameterRow}">
+                  <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="112"/></Grid.ColumnDefinitions>
+                  <StackPanel VerticalAlignment="Center" Margin="0,0,16,0">
+                    <TextBlock Text="{DynamicResource S_LimitMultiplier}"/>
+                    <Slider x:Name="LimitSlider" Height="16" Minimum="1" Maximum="16" Value="1.5" TickFrequency="0.01" IsSnapToTickEnabled="True" SmallChange="0.01" LargeChange="0.1" ValueChanged="SliderChanged" Margin="0,1,0,0" AutomationProperties.Name="{DynamicResource S_LimitMultiplier}"/>
+                  </StackPanel>
+                  <TextBox x:Name="LimitBox" Grid.Column="1" Text="1.50" TextAlignment="Right" LostKeyboardFocus="NumberCommitted" KeyDown="NumberKeyDown" AutomationProperties.Name="{DynamicResource S_LimitInput}"/>
+                </Grid>
+                <Grid x:Name="PowerRow" Style="{StaticResource ParameterRow}">
+                  <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="112"/></Grid.ColumnDefinitions>
+                  <TextBlock Text="{DynamicResource S_Power}" VerticalAlignment="Center"/>
+                  <TextBox x:Name="PowerBox" Grid.Column="1" TextAlignment="Right" LostKeyboardFocus="AdvancedNumberCommitted" KeyDown="NumberKeyDown" AutomationProperties.Name="{DynamicResource S_Power}"/>
+                </Grid>
+              </StackPanel>
+            </ScrollViewer>
+            <Button x:Name="ResetButton" Grid.Row="3" Content="{DynamicResource S_ResetDefaults}" Click="ResetClicked" HorizontalAlignment="Left" VerticalAlignment="Bottom" Style="{StaticResource QuietButton}" AutomationProperties.Name="{DynamicResource S_ResetDefaults}"/>
+          </Grid>
+          <Border Grid.Column="2" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1,0,0,0" Padding="28,0,0,0">
+            <Grid>
+              <Grid.RowDefinitions><RowDefinition Height="40"/><RowDefinition Height="*"/><RowDefinition Height="68"/></Grid.RowDefinitions>
+              <DockPanel>
+                <TextBlock x:Name="CurveModeLabel" Text="{Binding SelectedItem.Content, ElementName=CurveModeCombo}" DockPanel.Dock="Right" HorizontalAlignment="Right" Foreground="{DynamicResource SubtleBrush}" FontSize="10" VerticalAlignment="Top" Margin="0,5,0,0"/>
+                <TextBlock Text="{DynamicResource S_CurveTitle}" FontSize="14" FontWeight="Medium"/>
+              </DockPanel>
+              <local:CurveView x:Name="Curve" Grid.Row="1" MinHeight="140"/>
+              <StackPanel Grid.Row="2" VerticalAlignment="Bottom">
+                <CheckBox x:Name="ShowLastMouseMoveCheck" Content="{DynamicResource S_ShowLastMouseMove}" Click="CheckChanged" IsChecked="False" FontSize="11" Margin="0,0,0,10" ToolTip="{DynamicResource S_LastMoveTooltip}"/>
+                <TextBlock x:Name="CurveHint" Text="{DynamicResource S_CurveHint}" Foreground="{DynamicResource MutedBrush}" FontSize="11" TextWrapping="Wrap"/>
+              </StackPanel>
+            </Grid>
+          </Border>
+        </Grid>
+        <Border Grid.Row="2" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0" Padding="0,16,0,0">
+          <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <CheckBox x:Name="AutoStartBox" Content="{DynamicResource S_AutoStart}" Click="AutoStartClicked" FontSize="12" ToolTip="{DynamicResource S_AutoStartTooltip}"/>
+            <CheckBox x:Name="StartInTrayBox" Content="{DynamicResource S_StartInTray}" Click="TrayOptionClicked" FontSize="12" Margin="30,0,0,0" ToolTip="{DynamicResource S_StartInTrayTooltip}"/>
+            <TextBlock Text="{DynamicResource S_StartInfo}" FontSize="11" Foreground="{DynamicResource SubtleBrush}" Margin="28,0,0,0" VerticalAlignment="Center"/>
+          </StackPanel>
+        </Border>
+      </Grid>
+      <Border Grid.Row="2" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0" Background="{DynamicResource SurfaceBrush}">
+        <Grid Margin="36,0">
+          <Grid.RowDefinitions><RowDefinition Height="44"/><RowDefinition Height="64"/></Grid.RowDefinitions>
+          <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+            <StackPanel VerticalAlignment="Center" Margin="0,0,20,0">
+            <TextBlock x:Name="StatusLabel" Text="{DynamicResource S_Preview}" FontSize="12" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
+            <TextBlock x:Name="StatusDetail" Text="{DynamicResource S_PreviewDetail}" Foreground="{DynamicResource MutedBrush}" FontSize="11" Margin="0,5,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
+            </StackPanel>
+            <TextBlock x:Name="DriverVersionLabel" Grid.Column="1" VerticalAlignment="Center" FontSize="11" Foreground="{DynamicResource MutedBrush}" TextTrimming="CharacterEllipsis" Margin="12,0,0,0"/>
+          </Grid>
+          <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <StackPanel x:Name="DriverActions" Orientation="Horizontal" Visibility="Collapsed">
+              <Button x:Name="DriverReadButton" VerticalAlignment="Center" Padding="10,11" Margin="0,0,8,0" Click="DriverReadClicked" ToolTip="{DynamicResource S_ReadActiveTooltip}" AutomationProperties.Name="{DynamicResource S_ReadActive}">
+                <StackPanel Orientation="Horizontal"><Path Width="16" Height="16" Data="M13,5 A6,6 0 1 0 14,10 M13,2 V6 H9" Stroke="{DynamicResource MutedBrush}" StrokeThickness="1.25" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/><TextBlock Text="{DynamicResource S_ReadActive}" FontSize="12" Margin="8,0,0,0" VerticalAlignment="Center"/></StackPanel>
+              </Button>
+              <Button x:Name="DriverApplyButton" VerticalAlignment="Center" Padding="10,11" Margin="0,0,12,0" Click="DriverApplyClicked" ToolTip="{DynamicResource S_ApplyTooltip}" AutomationProperties.Name="{DynamicResource S_Apply}">
+                <StackPanel Orientation="Horizontal"><Path Width="16" Height="16" Data="M2,8 L6,12 L14,3" Stroke="{DynamicResource MutedBrush}" StrokeThickness="1.25" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/><TextBlock Text="{DynamicResource S_Apply}" FontSize="12" Margin="8,0,0,0" VerticalAlignment="Center"/></StackPanel>
+              </Button>
+            </StackPanel>
+            <Button x:Name="ImportButton" VerticalAlignment="Center" Padding="10,11" Margin="0,0,8,0" Click="ImportClicked" ToolTip="{DynamicResource S_ImportTooltip}" AutomationProperties.Name="{DynamicResource S_Import}">
+              <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Grid Width="16" Height="16" VerticalAlignment="Center">
+                  <Path Data="M2,10 V14 H14 V10 M8,2 V10 M4.5,6.5 L8,10 L11.5,6.5" Stroke="{DynamicResource MutedBrush}" StrokeThickness="1.25" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                </Grid>
+                <TextBlock Text="{DynamicResource S_Import}" FontSize="12" Margin="8,0,0,0" VerticalAlignment="Center"/>
+              </StackPanel>
+            </Button>
+            <Button x:Name="ExportButton" VerticalAlignment="Center" Padding="10,11" Margin="0,0,8,0" Click="ExportClicked" ToolTip="{DynamicResource S_ExportTooltip}" AutomationProperties.Name="{DynamicResource S_Export}">
+              <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Grid Width="16" Height="16" VerticalAlignment="Center">
+                  <Path Data="M2,10 V14 H14 V10 M8,10 V2 M4.5,5.5 L8,2 L11.5,5.5" Stroke="{DynamicResource MutedBrush}" StrokeThickness="1.25" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                </Grid>
+                <TextBlock Text="{DynamicResource S_Export}" FontSize="12" Margin="8,0,0,0" VerticalAlignment="Center"/>
+              </StackPanel>
+            </Button>
+            <Button x:Name="SaveButton" VerticalAlignment="Center" Padding="10,11" Click="SaveClicked" ToolTip="{DynamicResource S_SaveTooltip}" AutomationProperties.Name="{DynamicResource S_Save}">
+              <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Grid Width="16" Height="16" VerticalAlignment="Center">
+                  <Path Data="M2,2 H11 L14,5 V14 H2 Z M5,2 V6 H10 V2 M5,14 V10 H11 V14" Stroke="{DynamicResource MutedBrush}" StrokeThickness="1.25" StrokeLineJoin="Round"/>
+                </Grid>
+                <TextBlock Text="{DynamicResource S_Save}" FontSize="12" Margin="8,0,0,0" VerticalAlignment="Center"/>
+              </StackPanel>
+            </Button>
+          </StackPanel>
+        </Grid>
+      </Border>
+    </Grid>
+  </Border>
+</Window>
