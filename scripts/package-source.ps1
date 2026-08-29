@@ -18,7 +18,7 @@ try {
         # Tracked deletions remain in `git ls-files --cached` until committed.
         if (!(Test-Path -LiteralPath $path -PathType Leaf)) { continue }
         if ($relative -match '(^|/)\.\.(/|$)' -or $relative -match '[\r\n]' -or
-            $relative -notmatch '^(?:\.github/|assets/branding/|host/|scripts/|setup/|src/|tests/|tools/|[^/]+\.md$|LICENSE$|\.gitignore$)') {
+            $relative -notmatch '^(?:\.github/|assets/branding/|host/|scripts/|setup/|src/|tests/|tools/|[^/]+\.md$|LICENSE$|\.gitattributes$|\.gitignore$)') {
             throw "Unexpected source candidate (not archived): $relative"
         }
         if ($relative -match '(^|/)(?:bin|obj|\.git|\.tools)(/|$)' -or
@@ -33,7 +33,7 @@ try {
         }
         if ($item.PSIsContainer -or $item.Length -gt 5MB) { throw "Unexpected source file size/type: $relative" }
         $branding = $relative -match '^assets/branding/(?:icon|wordmark)-(?:black|white)\.png$'
-        if (!$branding -and $relative -notin @('LICENSE','.gitignore','tools/RawAccelBridge/upstream/LICENSE') -and $item.Extension -notin $extensions) {
+        if (!$branding -and $relative -notin @('LICENSE','.gitattributes','.gitignore','tools/RawAccelBridge/upstream/LICENSE') -and $item.Extension -notin $extensions) {
             throw "Unapproved source extension: $relative"
         }
         if (!$branding) {

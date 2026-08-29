@@ -3,7 +3,7 @@ $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 $projectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $count = 0
-foreach ($relative in @('README.md', 'host/host.c',
+foreach ($relative in @('.gitattributes', 'README.md', 'host/host.c',
     'tools/RawAccelBridge/rawaccel_bridge.cpp', 'tools/RawAccelBridge/upstream/LICENSE',
     'src/ZeroAccel/ZeroAccel.csproj', 'setup/0Accel.iss', 'setup/driver_helper.cpp',
     'setup/driver_helper.manifest', 'setup/driver_helper.rc', 'setup/install-info.txt')) {
