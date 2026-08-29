@@ -5,7 +5,8 @@ $projectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $count = 0
 foreach ($relative in @('README.md', 'host/host.c',
     'tools/RawAccelBridge/rawaccel_bridge.cpp', 'tools/RawAccelBridge/upstream/LICENSE',
-    'src/ZeroAccel/ZeroAccel.csproj')) {
+    'src/ZeroAccel/ZeroAccel.csproj', 'setup/0Accel.iss', 'setup/driver_helper.cpp',
+    'setup/driver_helper.manifest', 'setup/driver_helper.rc', 'setup/install-info.txt')) {
     if (!(Test-Path -LiteralPath (Join-Path $projectRoot $relative) -PathType Leaf)) {
         throw "Missing project file: $relative"
     }

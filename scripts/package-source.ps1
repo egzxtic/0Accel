@@ -9,7 +9,7 @@ try {
     $candidates = @(git ls-files --cached --others --exclude-standard)
     if ($LASTEXITCODE -ne 0 -or !$candidates.Count) { throw 'Cannot enumerate public source candidates.' }
     $source = @()
-    $extensions = @('.c','.h','.cpp','.hpp','.cs','.csproj','.xaml','.manifest','.ps1','.cmd','.yml','.yaml','.json','.rc','.vcxproj','.inx','.md','.xml')
+    $extensions = @('.c','.h','.cpp','.hpp','.cs','.csproj','.xaml','.manifest','.ps1','.cmd','.yml','.yaml','.json','.rc','.vcxproj','.inx','.iss','.config','.md','.txt','.xml')
     $secretPatterns = @('ghp_[A-Za-z0-9]{30,}', 'github_pat_[A-Za-z0-9_]{40,}', '-----BEGIN [A-Z ]*PRIVATE KEY-----')
     foreach ($candidate in ($candidates | Sort-Object -Unique)) {
         $relative = $candidate.Replace('\','/')
@@ -18,7 +18,7 @@ try {
         # Tracked deletions remain in `git ls-files --cached` until committed.
         if (!(Test-Path -LiteralPath $path -PathType Leaf)) { continue }
         if ($relative -match '(^|/)\.\.(/|$)' -or $relative -match '[\r\n]' -or
-            $relative -notmatch '^(?:\.github/|assets/branding/|host/|scripts/|src/|tests/|tools/|[^/]+\.md$|LICENSE$|\.gitignore$)') {
+            $relative -notmatch '^(?:\.github/|assets/branding/|host/|scripts/|setup/|src/|tests/|tools/|[^/]+\.md$|LICENSE$|\.gitignore$)') {
             throw "Unexpected source candidate (not archived): $relative"
         }
         if ($relative -match '(^|/)(?:bin|obj|\.git|\.tools)(/|$)' -or

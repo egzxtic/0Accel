@@ -5,8 +5,14 @@ Push-Location $projectRoot
 try {
     $zigExe = Join-Path $projectRoot '.tools/zig-x86_64-windows-0.15.2/zig.exe'
     if (!(Test-Path -LiteralPath $zigExe)) { $zigExe = (Get-Command zig -ErrorAction Stop).Source }
+    $env:ZIG_GLOBAL_CACHE_DIR = Join-Path $projectRoot '.tools/zig-global-cache'
+    $env:ZIG_LOCAL_CACHE_DIR = Join-Path $projectRoot 'artifacts/zig-cache'
+    New-Item -ItemType Directory -Force -Path $env:ZIG_GLOBAL_CACHE_DIR,$env:ZIG_LOCAL_CACHE_DIR | Out-Null
     $dotnetExe = Join-Path $projectRoot '.tools/dotnet/dotnet.exe'
     if (!(Test-Path -LiteralPath $dotnetExe)) { $dotnetExe = (Get-Command dotnet -ErrorAction Stop).Source }
+    $nugetConfig = Join-Path $PSScriptRoot 'NuGet.Config'
+    $nugetPackages = Join-Path $projectRoot '.tools/nuget-packages'
+    $restoreProperties = @("-p:RestoreConfigFile=$nugetConfig", "-p:RestorePackagesPath=$nugetPackages")
     $pin = Get-Content -LiteralPath tools/RawAccelBridge/upstream-hashes.json -Raw | ConvertFrom-Json
     foreach ($file in $pin.files.PSObject.Properties) {
         $path = Join-Path 'tools/RawAccelBridge/upstream' $file.Name
@@ -28,7 +34,7 @@ try {
             & .\artifacts\native\rawaccel_bridge_ubsan.exe
             if ($LASTEXITCODE -ne 0) { throw 'Raw Accel sanitizer tests failed.' }
         }
-        & $dotnetExe run --project tests/RawAccelTests/RawAccelTests.csproj -c Release
+        & $dotnetExe run --project tests/RawAccelTests/RawAccelTests.csproj -c Release @restoreProperties
         if ($LASTEXITCODE -ne 0) { throw 'Raw Accel managed offline tests failed.' }
     }
     Write-Host 'Raw Accel bridge ready. No driver installation, loading or device I/O.'

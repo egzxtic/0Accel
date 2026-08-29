@@ -26,10 +26,13 @@ jobs:
           }
           ./scripts/test-workspace-layout.ps1
           ./scripts/package-source.ps1 -VerifyOnly
-          ./scripts/build.ps1 -Sanitize
-      - name: Check release boundary and package preview
+          ./scripts/build.ps1 -Sanitize -SelfContained
+      - name: Check release boundary
         shell: pwsh
-        run: ./scripts/test-release-boundary.ps1
+        run: ./scripts/test-release-boundary.ps1 -SkipPackaging
+      - name: Package portable app and verified setup
+        shell: pwsh
+        run: ./scripts/package.ps1 -Channel Preview -Clean
       - uses: actions/upload-artifact@v4
         with:
           name: 0Accel-windows-x64-preview
@@ -55,6 +58,6 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: >-
           gh release create "$GITHUB_REF_NAME"
-          releases/*.zip releases/*.sha256
+          releases/*.exe releases/*.zip releases/*.sha256
           --verify-tag --prerelease --generate-notes
           --title "0Accel $GITHUB_REF_NAME"

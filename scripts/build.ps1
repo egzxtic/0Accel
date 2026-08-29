@@ -5,6 +5,9 @@ Push-Location $projectRoot
 try {
     $dotnetExe=Join-Path $projectRoot '.tools/dotnet/dotnet.exe'
     if (!(Test-Path -LiteralPath $dotnetExe)) { $dotnetExe=(Get-Command dotnet -ErrorAction Stop).Source }
+    $nugetConfig=Join-Path $PSScriptRoot 'NuGet.Config'
+    $nugetPackages=Join-Path $projectRoot '.tools/nuget-packages'
+    $restoreProperties=@("-p:RestoreConfigFile=$nugetConfig","-p:RestorePackagesPath=$nugetPackages")
     $zigExe=Join-Path $projectRoot '.tools/zig-x86_64-windows-0.15.2/zig.exe'
     if (!(Test-Path -LiteralPath $zigExe)) { $zigExe=(Get-Command zig -ErrorAction Stop).Source }
     $env:DOTNET_CLI_TELEMETRY_OPTOUT='1';$env:DOTNET_NOLOGO='1'
@@ -16,12 +19,12 @@ try {
 
     & (Join-Path $PSScriptRoot 'build-rawaccel.ps1') -SkipTests:$SkipTests -Sanitize:$Sanitize
     if (!$SkipTests) {
-        & $dotnetExe run --project tests/SettingsTests/SettingsTests.csproj -c Release
+        & $dotnetExe run --project tests/SettingsTests/SettingsTests.csproj -c Release @restoreProperties
         if ($LASTEXITCODE -ne 0) { throw 'Settings tests failed.' }
     }
 
     New-Item -ItemType Directory -Force -Path artifacts/native,artifacts/staging | Out-Null
-    & $dotnetExe run --project tools/IconGenerator/IconGenerator.csproj -c Release -- artifacts/native/0Accel.ico --source assets/branding/icon-white.png
+    & $dotnetExe run --project tools/IconGenerator/IconGenerator.csproj -c Release @restoreProperties -- artifacts/native/0Accel.ico --source assets/branding/icon-white.png
     if ($LASTEXITCODE -ne 0) { throw 'Icon generation failed.' }
     & $zigExe rc /fo artifacts/native/host.res host/0Accel.rc
     if ($LASTEXITCODE -ne 0) { throw 'Host resource build failed.' }
@@ -32,7 +35,7 @@ try {
     $staging=Join-Path $projectRoot "artifacts/staging/$buildId"
     $panelDirectory=Join-Path $staging 'app'
     $contained=if($SelfContained){'true'}else{'false'}
-    & $dotnetExe publish src/ZeroAccel/ZeroAccel.csproj -c Release -r win-x64 --self-contained $contained -o $panelDirectory
+    & $dotnetExe publish src/ZeroAccel/ZeroAccel.csproj -c Release -r win-x64 --self-contained $contained -o $panelDirectory @restoreProperties
     if ($LASTEXITCODE -ne 0) { throw 'Application build failed.' }
     Copy-Item -LiteralPath artifacts/native/0Accel.exe -Destination (Join-Path $staging '0Accel.exe')
     Copy-Item -LiteralPath LICENSE -Destination $staging

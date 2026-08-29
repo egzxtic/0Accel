@@ -1,0 +1,22 @@
+0Accel Preview
+
+Instalator zawiera własny panel 0Accel oraz niezmieniony sterownik z oficjalnego wydania Raw Accel 1.7.1.
+
+Przed instalacją sterownika sprawdzane są:
+- SHA-256 oficjalnego pliku rawaccel.sys;
+- podpis Microsoft Windows Hardware Compatibility Publisher;
+- konfiguracja usługi i filtra myszy po zapisie.
+
+Jeżeli prawidłowy sterownik jest już zainstalowany, nie zostanie nadpisany. Pierwsza instalacja lub aktualizacja filtra wymaga ponownego uruchomienia Windows.
+
+0Accel jest projektem niezależnym i nie jest zatwierdzony przez autorów Raw Accel ani Riot Games. Podpisany sterownik i otwarty kod nie stanowią gwarancji zgodności z każdym systemem anti-cheat.
+
+---
+
+The installer contains the 0Accel panel and the unmodified driver from the official Raw Accel 1.7.1 release.
+
+Before installation, setup verifies the official rawaccel.sys SHA-256, its Microsoft Windows Hardware Compatibility Publisher signature, and the resulting service/filter configuration.
+
+If the correct driver is already installed, it is left unchanged. A first install or filter update requires a Windows restart.
+
+0Accel is independent and is not endorsed by the Raw Accel authors or Riot Games. A signed driver and open source code do not guarantee compatibility with every anti-cheat system.
